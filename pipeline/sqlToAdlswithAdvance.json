@@ -65,7 +65,7 @@
 						{
 							"type": "Query",
 							"text": {
-								"value": "SELECT COUNT(*) AS total_count FROM @{pipeline().parameters.schema}.@{pipeline().parameters.table} WHERE last_updated > @{activity('last_timestamp_value').output.firstRow.cdc_timestamp}",
+								"value": "SELECT COUNT(*) AS total_count FROM @{pipeline().parameters.schema}.@{pipeline().parameters.table} WHERE last_updated > '@{if(empty(pipeline().parameters.backdate),activity('last_timestamp_value').output.firstRow.cdc_timestamp,pipeline().parameters.backdate)}'\n\n\n",
 								"type": "Expression"
 							}
 						}
@@ -107,7 +107,7 @@
 								"source": {
 									"type": "AzureSqlSource",
 									"sqlReaderQuery": {
-										"value": "SELECT * FROM @{pipeline().parameters.schema}.@{pipeline().parameters.table} WHERE last_updated > @{activity('last_timestamp_value').output.firstRow.cdc_timestamp}",
+										"value": "SELECT * FROM @{pipeline().parameters.schema}.@{pipeline().parameters.table} WHERE last_updated > '@{if(empty(pipeline().parameters.backdate),activity('last_timestamp_value').output.firstRow.cdc_timestamp,pipeline().parameters.backdate)}'",
 										"type": "Expression"
 									},
 									"queryTimeout": "02:00:00",
@@ -178,7 +178,7 @@
 									{
 										"type": "Query",
 										"text": {
-											"value": "SELECT MAX(last_updated) As current_timestamp FROM @{pipeline().parameters.schema}.@{pipeline().parameters.table}",
+											"value": "SELECT MAX(last_updated) As cdc_timestamp FROM @{pipeline().parameters.schema}.@{pipeline().parameters.table}",
 											"type": "Expression"
 										}
 									}
@@ -272,6 +272,9 @@
 			"table": {
 				"type": "string",
 				"defaultValue": "orders"
+			},
+			"backdate": {
+				"type": "string"
 			}
 		},
 		"variables": {
