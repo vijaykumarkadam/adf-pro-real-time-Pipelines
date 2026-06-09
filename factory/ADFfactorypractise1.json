@@ -1,0 +1,15 @@
+{
+	"name": "ADFfactorypractise1",
+	"properties": {
+		"trustModeClaimForMi": {
+			"value": "Disabled",
+			"editable": true
+		}
+	},
+	"location": "uksouth",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "27f3adac-f9bf-4907-8660-9385a38879ff",
+		"tenantId": "d5f329f6-e66d-4b04-b87b-e28e22ee1aaf"
+	}
+}
