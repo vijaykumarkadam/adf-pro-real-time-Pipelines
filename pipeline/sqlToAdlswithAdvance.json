@@ -274,7 +274,8 @@
 				"defaultValue": "orders"
 			},
 			"backdate": {
-				"type": "string"
+				"type": "string",
+				"defaultValue": "2025-09-26"
 			}
 		},
 		"variables": {
