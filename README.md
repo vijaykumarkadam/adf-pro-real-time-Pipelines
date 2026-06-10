@@ -13,3 +13,7 @@ pipeline 3)
 1)copy files with schema as it is
 ![Architecture](rawData/architecture1.png)
 
+pipeline 4)
+1) Copy data to ADLS from Rest API with using offset and limit
+  ![Architecture](rawData/architecture2.png)
+
