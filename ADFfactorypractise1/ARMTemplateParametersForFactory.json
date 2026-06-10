@@ -11,6 +11,9 @@
 		"ls_adls_accountKey": {
 			"value": ""
 		},
+		"ls_adls_restAPI_accountKey": {
+			"value": ""
+		},
 		"ls_multidestination_adls_accountKey": {
 			"value": ""
 		},
@@ -23,8 +26,14 @@
 		"ls_adls_properties_typeProperties_url": {
 			"value": "https://storageforadfpro.dfs.core.windows.net/"
 		},
+		"ls_adls_restAPI_properties_typeProperties_url": {
+			"value": "https://storageforadfpro.dfs.core.windows.net/"
+		},
 		"ls_multidestination_adls_properties_typeProperties_url": {
 			"value": "https://storageforadfpro.dfs.core.windows.net/"
+		},
+		"ls_restAPI_properties_typeProperties_url": {
+			"value": "https://pokeapi.co/api/v2/pokemon"
 		},
 		"ls_sql_properties_typeProperties_server": {
 			"value": "adfprodbserver.database.windows.net"
