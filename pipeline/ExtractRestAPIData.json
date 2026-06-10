@@ -1,0 +1,114 @@
+{
+	"name": "ExtractRestAPIData",
+	"properties": {
+		"activities": [
+			{
+				"name": "RestAPIData",
+				"type": "WebActivity",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"method": "GET",
+					"url": "https://pokeapi.co/api/v2/pokemon"
+				}
+			},
+			{
+				"name": "Copy API Data",
+				"type": "Copy",
+				"dependsOn": [
+					{
+						"activity": "RestAPIData",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "RestSource",
+						"httpRequestTimeout": "00:01:40",
+						"requestInterval": "00.00:00:00.010",
+						"requestMethod": "GET",
+						"paginationRules": {
+							"QueryParameters.offset": {
+								"value": "RANGE:0:@{activity('RestAPIData').output.count}:20",
+								"type": "Expression"
+							}
+						}
+					},
+					"sink": {
+						"type": "JsonSink",
+						"storeSettings": {
+							"type": "AzureBlobFSWriteSettings"
+						},
+						"formatSettings": {
+							"type": "JsonWriteSettings"
+						}
+					},
+					"enableStaging": false
+				},
+				"inputs": [
+					{
+						"referenceName": "ds_RestAPI",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "ds_adls_RestAPI",
+						"type": "DatasetReference",
+						"parameters": {
+							"container": "target",
+							"folder": "RestAPI",
+							"file": "pokeman.json"
+						}
+					}
+				]
+			},
+			{
+				"name": "send mail to user",
+				"type": "WebActivity",
+				"dependsOn": [
+					{
+						"activity": "Copy API Data",
+						"dependencyConditions": [
+							"Failed"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"method": "POST",
+					"url": "https://prod-07.uksouth.logic.azure.com:443/workflows/f11a8cce18ef412a9c51aabcefacd61d/triggers/When_an_HTTP_request_is_received/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2FWhen_an_HTTP_request_is_received%2Frun&sv=1.0&sig=AQUFNJZd66RN2CsY2P0vr3j9R4L5x9o3PY94-oUwIYo",
+					"body": {
+						"value": "{\n    \"pipeline name\" : @{pipeline().Pipeline},\n    \"pipeline ID\" : @{pipeline().RunId}\n}",
+						"type": "Expression"
+					}
+				}
+			}
+		],
+		"annotations": []
+	}
+}
