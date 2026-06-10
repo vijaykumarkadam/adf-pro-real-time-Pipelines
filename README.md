@@ -4,7 +4,7 @@ Pipeline 1)
 2) Pipeline architecture is
    ![Architecture](rawData/architecure.png)
 
-pipeline2)
+pipeline 2)
 1)The pipeline copies source files to multiple destinations only when the manager uploads a file. If no file is uploaded, the entire pipeline will not run.
    use validation,metadata activity,For Each activity,switch and copy activity
    ![Architecture](rawData/architecture.png)
